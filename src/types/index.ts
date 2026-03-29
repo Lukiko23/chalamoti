@@ -13,6 +13,8 @@ export interface Product {
   available: boolean;
   category: 'bouteille' | 'bidon';
   image: string;
+  coverImage?: string;
+  detailImage?: string;
 }
 
 export interface CartItem {

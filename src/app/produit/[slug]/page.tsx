@@ -9,9 +9,6 @@ import { products } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/ProductCard';
 
-const hasRealImage = (img: string) => {
-  return img && !img.includes('wine-red-bottle') && !img.includes('wine-white-bottle') && !img.includes('wine-red-5l') && !img.includes('wine-white-5l') && !img.includes('wine-red-bottle-2');
-};
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -71,13 +68,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className={`rounded-3xl overflow-hidden ${
-                hasRealImage(product.image) ? '' : 'p-16 flex items-center justify-center ' + (isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15')
+                product.detailImage ? '' : 'p-16 flex items-center justify-center ' + (isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15')
               }`}
             >
-              <div className={`relative w-full ${hasRealImage(product.image) ? 'min-h-[500px]' : 'h-full min-h-[400px]'}`}>
-                {hasRealImage(product.image) ? (
+              <div className={`relative w-full ${product.detailImage ? 'min-h-[500px]' : 'h-full min-h-[400px]'}`}>
+                {product.detailImage ? (
                   <Image
-                    src={product.image}
+                    src={product.detailImage}
                     alt={product.name}
                     fill
                     className="object-cover"

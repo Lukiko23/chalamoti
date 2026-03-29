@@ -16,6 +16,8 @@ export const products: Product[] = [
     available: true,
     category: 'bouteille',
     image: '/rouge-bouteille.jpg.png',
+    coverImage: '/saperavi-cover.jpg',
+    detailImage: '/saperavi-detail.jpg',
   },
   {
     id: '2',
@@ -32,6 +34,8 @@ export const products: Product[] = [
     available: true,
     category: 'bouteille',
     image: '/wine-white-bottle.jpg',
+    coverImage: '/rkatsiteli-cover.jpg',
+    detailImage: '/rkatsiteli-detail.jpg',
   },
   {
     id: '3',
@@ -48,6 +52,8 @@ export const products: Product[] = [
     available: true,
     category: 'bouteille',
     image: '/wine-red-bottle-2.jpg',
+    coverImage: '/kindzmarauli-cover.jpg',
+    detailImage: '/kindzmarauli-detail.jpg',
   },
   {
     id: '4',
@@ -64,6 +70,8 @@ export const products: Product[] = [
     available: true,
     category: 'bidon',
     image: '/wine-red-5l.jpg',
+    coverImage: '/saperavi-5l-cover.jpg',
+    detailImage: '/saperavi-5l-detail.jpg',
   },
   {
     id: '5',
@@ -80,6 +88,8 @@ export const products: Product[] = [
     available: true,
     category: 'bidon',
     image: '/wine-white-5l.jpg',
+    coverImage: '/rkatsiteli-5l-cover.jpg',
+    detailImage: '/rkatsiteli-5l-detail.jpg',
   },
 ];
 
