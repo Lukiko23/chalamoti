@@ -70,17 +70,17 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className={`rounded-3xl p-16 flex items-center justify-center ${
-                isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15'
+              className={`rounded-3xl overflow-hidden ${
+                hasRealImage(product.image) ? '' : 'p-16 flex items-center justify-center ' + (isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15')
               }`}
             >
-              <div className="relative w-full h-full min-h-[400px]">
+              <div className={`relative w-full ${hasRealImage(product.image) ? 'min-h-[500px]' : 'h-full min-h-[400px]'}`}>
                 {hasRealImage(product.image) ? (
                   <Image
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-cover rounded-2xl"
+                    className="object-cover"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                   />
