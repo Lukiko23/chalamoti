@@ -74,13 +74,13 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15'
               }`}
             >
-              <div className="relative w-full h-full min-h-[300px]">
+              <div className="relative w-full h-full min-h-[400px]">
                 {hasRealImage(product.image) ? (
                   <Image
                     src={product.image}
                     alt={product.name}
                     fill
-                    className="object-contain p-4"
+                    className="object-cover rounded-2xl"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                   />

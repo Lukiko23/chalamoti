@@ -30,23 +30,24 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 border border-cream/50 hover:border-gold/30"
     >
       {/* Image area */}
-      <div className={`relative h-64 flex items-center justify-center overflow-hidden ${
-        isRed ? 'bg-gradient-to-br from-wine/5 to-wine/10' : 'bg-gradient-to-br from-gold/5 to-gold/10'
+      <div className={`relative ${hasRealImage(product.image) ? 'h-72' : 'h-64'} flex items-center justify-center overflow-hidden ${
+        hasRealImage(product.image) ? '' : isRed ? 'bg-gradient-to-br from-wine/5 to-wine/10' : 'bg-gradient-to-br from-gold/5 to-gold/10'
       }`}>
         {hasRealImage(product.image) ? (
           /* Real product image */
           <motion.div
             className="relative z-10 w-full h-full"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.03 }}
             transition={{ type: 'spring', stiffness: 300 }}
           >
             <Image
               src={product.image}
               alt={product.name}
               fill
-              className="object-contain p-4"
+              className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
           </motion.div>
         ) : (
           <>
@@ -81,10 +82,12 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
 
         {/* Badge */}
         <div className="absolute top-4 left-4 z-20">
-          <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
-            isRed
-              ? 'bg-wine/10 text-wine border border-wine/20'
-              : 'bg-gold/10 text-amber-700 border border-gold/30'
+          <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full backdrop-blur-sm ${
+            hasRealImage(product.image)
+              ? 'bg-white/80 text-charcoal border border-white/50'
+              : isRed
+                ? 'bg-wine/10 text-wine border border-wine/20'
+                : 'bg-gold/10 text-amber-700 border border-gold/30'
           }`}>
             {product.format}
           </span>
