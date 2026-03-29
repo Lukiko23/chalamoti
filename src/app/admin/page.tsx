@@ -97,7 +97,7 @@ export default function AdminDashboard() {
 
       {/* Charts row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Visits Chart */}
+        {/* Visits Line Chart */}
         <div className="bg-white rounded-2xl border border-cream p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -109,22 +109,60 @@ export default function AdminDashboard() {
               <p className="text-xs text-charcoal/40">ce mois</p>
             </div>
           </div>
-          <div className="flex items-end gap-2 h-40">
-            {visits.dailyCounts.map((d) => {
-              const height = maxVisits > 0 ? (d.count / maxVisits) * 100 : 0;
-              const dayIndex = new Date(d.date + 'T12:00:00').getDay();
-              return (
-                <div key={d.date} className="flex-1 flex flex-col items-center gap-1">
-                  <span className="text-[10px] font-bold text-charcoal/60">{d.count}</span>
-                  <div
-                    style={{ height: `${Math.max(height, 4)}%` }}
-                    className="w-full rounded-t-lg bg-gradient-to-t from-wine to-wine/60 min-h-[4px] transition-all duration-500"
-                  />
-                  <span className="text-[10px] text-charcoal/40">{dayLabels[dayIndex]}</span>
-                </div>
-              );
-            })}
-          </div>
+          {(() => {
+            const data = visits.dailyCounts;
+            const chartW = 500;
+            const chartH = 160;
+            const padX = 10;
+            const padY = 10;
+            const w = chartW - padX * 2;
+            const h = chartH - padY * 2;
+            const max = Math.max(...data.map(d => d.count), 1);
+
+            const points = data.map((d, i) => ({
+              x: padX + (data.length > 1 ? (i / (data.length - 1)) * w : w / 2),
+              y: padY + h - (d.count / max) * h,
+              count: d.count,
+              day: dayLabels[new Date(d.date + 'T12:00:00').getDay()],
+            }));
+
+            const linePath = points.map((p, i) => `${i === 0 ? 'M' : 'L'}${p.x},${p.y}`).join(' ');
+            const areaPath = linePath + ` L${points[points.length - 1]?.x ?? 0},${padY + h} L${points[0]?.x ?? 0},${padY + h} Z`;
+
+            return (
+              <div className="relative">
+                <svg viewBox={`0 0 ${chartW} ${chartH + 24}`} className="w-full h-48" preserveAspectRatio="none">
+                  {/* Grid lines */}
+                  {[0, 0.25, 0.5, 0.75, 1].map(pct => (
+                    <line
+                      key={pct}
+                      x1={padX} x2={padX + w}
+                      y1={padY + h - pct * h} y2={padY + h - pct * h}
+                      stroke="#f0ece4" strokeWidth={1}
+                    />
+                  ))}
+                  {/* Area fill */}
+                  <path d={areaPath} fill="url(#wineGradient)" opacity={0.15} />
+                  {/* Line */}
+                  <path d={linePath} fill="none" stroke="#722F37" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+                  {/* Dots + labels */}
+                  {points.map((p, i) => (
+                    <g key={i}>
+                      <circle cx={p.x} cy={p.y} r={4} fill="#722F37" stroke="white" strokeWidth={2} />
+                      <text x={p.x} y={p.y - 10} textAnchor="middle" className="text-[10px] font-bold" fill="#333" fontSize={10}>{p.count}</text>
+                      <text x={p.x} y={chartH + 16} textAnchor="middle" fill="#999" fontSize={10}>{p.day}</text>
+                    </g>
+                  ))}
+                  <defs>
+                    <linearGradient id="wineGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#722F37" />
+                      <stop offset="100%" stopColor="#722F37" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Orders breakdown */}

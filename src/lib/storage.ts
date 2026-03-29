@@ -72,6 +72,28 @@ export async function getAllUsers(): Promise<User[]> {
   }
 }
 
+export async function getUserByEmail(email: string): Promise<User | undefined> {
+  try {
+    const snap = await getDocs(query(collection(db, 'users'), where('email', '==', email)));
+    if (snap.empty) return undefined;
+    const d = snap.docs[0];
+    return { id: d.id, ...d.data() } as User;
+  } catch {
+    return undefined;
+  }
+}
+
+export async function getOrdersByEmail(email: string): Promise<Order[]> {
+  try {
+    const snap = await getDocs(query(collection(db, 'orders'), orderBy('createdAt', 'desc')));
+    return snap.docs
+      .map(d => d.data() as Order)
+      .filter(o => o.info.email.toLowerCase() === email.toLowerCase());
+  } catch {
+    return [];
+  }
+}
+
 // ---- VISITS ----
 
 export async function trackVisit(page: string): Promise<void> {

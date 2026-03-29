@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
+import Link from 'next/link';
 import { User } from '@/types';
 import { getAllUsers } from '@/lib/storage';
 
@@ -119,13 +119,15 @@ export default function UtilisateursPage() {
                   <th className="text-left text-xs font-semibold text-charcoal/50 uppercase tracking-wide px-6 py-3">Email</th>
                   <th className="text-left text-xs font-semibold text-charcoal/50 uppercase tracking-wide px-6 py-3">R&ocirc;le</th>
                   <th className="text-left text-xs font-semibold text-charcoal/50 uppercase tracking-wide px-6 py-3">Inscrit le</th>
+                  <th className="text-right text-xs font-semibold text-charcoal/50 uppercase tracking-wide px-6 py-3"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-cream">
-                {filtered.map((user, i) => (
+                {filtered.map((user) => (
                   <tr
                     key={user.id}
-                    className="hover:bg-cream/20 transition-colors"
+                    className="hover:bg-cream/20 transition-colors cursor-pointer group"
+                    onClick={() => window.location.href = `/admin/utilisateurs/${user.id}`}
                   >
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -133,7 +135,7 @@ export default function UtilisateursPage() {
                           {user.firstName?.[0]?.toUpperCase()}{user.lastName?.[0]?.toUpperCase()}
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-charcoal">{user.firstName} {user.lastName}</p>
+                          <p className="text-sm font-semibold text-charcoal group-hover:text-wine transition-colors">{user.firstName} {user.lastName}</p>
                         </div>
                       </div>
                     </td>
@@ -149,6 +151,11 @@ export default function UtilisateursPage() {
                     </td>
                     <td className="px-6 py-4 text-sm text-charcoal/50">
                       {user.createdAt && new Date(user.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <svg className="w-5 h-5 text-charcoal/20 group-hover:text-wine transition-colors inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
                     </td>
                   </tr>
                 ))}
