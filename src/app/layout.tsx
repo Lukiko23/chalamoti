@@ -3,6 +3,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import LayoutShell from "@/components/LayoutShell";
+import VisitTracker from "@/components/VisitTracker";
 
 export const metadata: Metadata = {
   title: "Chalamoti — Vins Géorgiens d'Exception",
@@ -27,6 +28,7 @@ export default function RootLayout({
       <body className="antialiased">
         <AuthProvider>
           <CartProvider>
+            <VisitTracker />
             <LayoutShell>{children}</LayoutShell>
           </CartProvider>
         </AuthProvider>
