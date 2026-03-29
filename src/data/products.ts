@@ -16,8 +16,8 @@ export const products: Product[] = [
     available: true,
     category: 'bouteille',
     image: '/rouge-bouteille.jpg.png',
-    coverImage: '/saperavi-cover.jpg',
-    detailImage: '/saperavi-detail.jpg',
+    coverImage: '/saperavi-cover.jpg.jpg',
+    detailImage: '/saperavi-detail.jpg.png',
   },
   {
     id: '2',
