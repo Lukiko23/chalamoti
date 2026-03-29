@@ -68,7 +68,9 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
               className={`rounded-3xl overflow-hidden ${
-                product.detailImage ? '' : 'p-16 flex items-center justify-center ' + (isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15')
+                product.detailImage
+                  ? 'bg-gradient-to-br from-cream/50 to-white'
+                  : 'p-16 flex items-center justify-center ' + (isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15')
               }`}
             >
               <div className={`relative w-full ${product.detailImage ? 'min-h-[500px]' : 'h-full min-h-[400px]'}`}>
@@ -77,7 +79,7 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                     src={product.detailImage}
                     alt={product.name}
                     fill
-                    className="object-cover"
+                    className="object-contain p-6"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     priority
                   />
