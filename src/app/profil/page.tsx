@@ -5,6 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 export default function ProfilPage() {
   const { user, isLoading, logout } = useAuth();
@@ -12,6 +13,7 @@ export default function ProfilPage() {
   const [showTicket, setShowTicket] = useState(false);
   const [ticketMessage, setTicketMessage] = useState('');
   const [ticketSent, setTicketSent] = useState(false);
+  const { t } = useTranslation();
 
   if (isLoading) {
     return (
@@ -71,7 +73,7 @@ export default function ProfilPage() {
                 </div>
                 <div className="pb-1">
                   <h1 className="text-xl font-serif font-bold text-charcoal">{user.firstName} {user.lastName}</h1>
-                  <p className="text-sm text-charcoal/50">{user.role === 'admin' ? 'Administrateur' : 'Client'}</p>
+                  <p className="text-sm text-charcoal/50">{user.role === 'admin' ? t('profile.admin') : t('profile.customer')}</p>
                 </div>
               </div>
 
@@ -82,7 +84,7 @@ export default function ProfilPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                   </svg>
                   <div>
-                    <p className="text-xs text-charcoal/40">Email</p>
+                    <p className="text-xs text-charcoal/40">{t('profile.email')}</p>
                     <p className="text-sm font-medium text-charcoal">{user.email}</p>
                   </div>
                 </div>
@@ -91,8 +93,8 @@ export default function ProfilPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
                   <div>
-                    <p className="text-xs text-charcoal/40">R&ocirc;le</p>
-                    <p className="text-sm font-medium text-charcoal">{user.role === 'admin' ? 'Administrateur' : 'Client'}</p>
+                    <p className="text-xs text-charcoal/40">{t('profile.role')}</p>
+                    <p className="text-sm font-medium text-charcoal">{user.role === 'admin' ? t('profile.admin') : t('profile.customer')}</p>
                   </div>
                 </div>
               </div>
@@ -112,8 +114,8 @@ export default function ProfilPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-charcoal">Cr&eacute;er un ticket</p>
-                <p className="text-xs text-charcoal/40">Envoyer une demande &agrave; l&apos;&eacute;quipe</p>
+                <p className="text-sm font-semibold text-charcoal">{t('profile.ticket')}</p>
+                <p className="text-xs text-charcoal/40">{t('profile.ticket.desc')}</p>
               </div>
               <svg className={`w-5 h-5 text-charcoal/30 ml-auto transition-transform ${showTicket ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
@@ -127,14 +129,14 @@ export default function ProfilPage() {
                     <svg className="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
-                    <p className="text-sm text-green-700">Ticket envoy&eacute; avec succ&egrave;s !</p>
+                    <p className="text-sm text-green-700">{t('profile.ticket.success')}</p>
                   </div>
                 ) : (
                   <>
                     <textarea
                       value={ticketMessage}
                       onChange={e => setTicketMessage(e.target.value)}
-                      placeholder="D&eacute;crivez votre probl&egrave;me ou demande..."
+                      placeholder={t('profile.ticket.placeholder')}
                       className="w-full p-4 rounded-xl border border-cream bg-cream/20 focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine resize-none h-28 text-sm transition-colors"
                     />
                     <button
@@ -142,7 +144,7 @@ export default function ProfilPage() {
                       disabled={!ticketMessage.trim()}
                       className="px-6 py-2.5 bg-wine text-white rounded-xl text-sm font-medium hover:bg-wine/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                     >
-                      Envoyer le ticket
+                      {t('profile.ticket.submit')}
                     </button>
                   </>
                 )}
@@ -160,8 +162,8 @@ export default function ProfilPage() {
                 </svg>
               </div>
               <div>
-                <p className="text-sm font-semibold text-red-500">Se d&eacute;connecter</p>
-                <p className="text-xs text-charcoal/40">Quitter votre session</p>
+                <p className="text-sm font-semibold text-red-500">{t('profile.logout')}</p>
+                <p className="text-xs text-charcoal/40">{t('profile.logout.desc')}</p>
               </div>
             </button>
           </div>

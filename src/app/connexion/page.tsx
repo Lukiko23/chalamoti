@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 export default function ConnexionPage() {
   const [email, setEmail] = useState('');
@@ -13,12 +14,13 @@ export default function ConnexionPage() {
   const [showPassword, setShowPassword] = useState(false);
   const { login, isAdmin } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     if (!email || !password) {
-      setError('Veuillez remplir tous les champs.');
+      setError(t('login.error.empty'));
       return;
     }
     const result = await login(email, password);
@@ -40,10 +42,10 @@ export default function ConnexionPage() {
         <div className="grain absolute inset-0" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="text-gold text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">Espace client</span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Connexion</h1>
+            <span className="text-gold text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{t('login.subtitle')}</span>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">{t('login.title')}</h1>
             <p className="text-white/50 max-w-xl mx-auto">
-              Connectez-vous &agrave; votre compte Chalamoti.
+              {t('login.desc')}
             </p>
           </motion.div>
         </div>
@@ -64,7 +66,7 @@ export default function ConnexionPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-serif font-bold text-charcoal">Bienvenue</h2>
+              <h2 className="text-xl font-serif font-bold text-charcoal">{t('login.welcome')}</h2>
             </div>
 
             {error && (
@@ -79,7 +81,7 @@ export default function ConnexionPage() {
 
             <div className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Adresse e-mail</label>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('login.email')}</label>
                 <input
                   type="email"
                   required
@@ -90,7 +92,7 @@ export default function ConnexionPage() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Mot de passe</label>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('login.password')}</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -123,14 +125,14 @@ export default function ConnexionPage() {
                 type="submit"
                 className="w-full py-4 bg-wine text-white font-semibold rounded-xl hover:bg-wine-dark transition-all duration-300 shadow-lg shadow-wine/20 hover:shadow-xl hover:-translate-y-0.5"
               >
-                Se connecter
+                {t('login.submit')}
               </button>
             </div>
 
             <p className="mt-6 text-center text-sm text-charcoal/50">
-              Pas encore de compte ?{' '}
+              {t('login.register')}{' '}
               <Link href="/inscription" className="text-wine font-semibold hover:underline">
-                Inscrivez-vous
+                {t('login.register.link')}
               </Link>
             </p>
           </motion.form>

@@ -4,6 +4,7 @@ import { CartProvider } from "@/context/CartContext";
 import { AuthProvider } from "@/context/AuthContext";
 import LayoutShell from "@/components/LayoutShell";
 import VisitTracker from "@/components/VisitTracker";
+import { LanguageProvider } from "@/i18n/LanguageContext";
 
 export const metadata: Metadata = {
   title: "Chalamoti — Vins Géorgiens d'Exception",
@@ -27,10 +28,12 @@ export default function RootLayout({
     <html lang="fr">
       <body className="antialiased">
         <AuthProvider>
-          <CartProvider>
-            <VisitTracker />
-            <LayoutShell>{children}</LayoutShell>
-          </CartProvider>
+          <LanguageProvider>
+            <CartProvider>
+              <VisitTracker />
+              <LayoutShell>{children}</LayoutShell>
+            </CartProvider>
+          </LanguageProvider>
         </AuthProvider>
       </body>
     </html>

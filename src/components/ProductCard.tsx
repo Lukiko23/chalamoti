@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +14,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { addItem } = useCart();
+  const { t } = useTranslation();
 
   const isRed = product.type.includes('rouge');
   const isBidon = product.category === 'bidon';
@@ -113,13 +115,13 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
             href={`/produit/${product.slug}`}
             className="flex-1 py-2.5 text-center text-sm font-semibold text-wine border-2 border-wine/20 rounded-xl hover:border-wine hover:bg-wine/5 transition-all duration-300"
           >
-            Voir le détail
+            {t('product.detail')}
           </Link>
           <button
             onClick={() => addItem(product)}
             className="flex-1 py-2.5 text-center text-sm font-semibold text-white bg-wine rounded-xl hover:bg-wine-dark transition-all duration-300 shadow-md shadow-wine/20 hover:shadow-lg hover:shadow-wine/30 hover:-translate-y-0.5"
           >
-            Commander
+            {t('product.order')}
           </button>
         </div>
       </div>

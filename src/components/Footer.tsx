@@ -1,6 +1,11 @@
+'use client';
+
 import Link from 'next/link';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 export default function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer className="bg-charcoal text-white/80">
       {/* Main footer */}
@@ -18,21 +23,20 @@ export default function Footer() {
               <span className="text-2xl font-serif font-bold text-white">Chalamoti</span>
             </Link>
             <p className="text-white/50 text-sm leading-relaxed mt-2">
-              Vins géorgiens d&apos;exception, issus d&apos;un savoir-faire millénaire.
-              Authenticité, qualité et passion du terroir.
+              {t('footer.tagline')}
             </p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">Navigation</h3>
+            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">{t('footer.nav')}</h3>
             <ul className="space-y-3">
               {[
-                { href: '/', label: 'Accueil' },
-                { href: '/catalogue', label: 'Catalogue' },
-                { href: '/commander', label: 'Commander' },
-                { href: '/a-propos', label: 'À propos' },
-                { href: '/contact', label: 'Contact' },
+                { href: '/', label: t('nav.home') },
+                { href: '/catalogue', label: t('nav.catalog') },
+                { href: '/commander', label: t('nav.order') },
+                { href: '/a-propos', label: t('nav.about') },
+                { href: '/contact', label: t('nav.contact') },
               ].map(link => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-white/50 hover:text-gold transition-colors text-sm">
@@ -45,26 +49,26 @@ export default function Footer() {
 
           {/* Legal */}
           <div>
-            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">Informations</h3>
+            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">{t('footer.info')}</h3>
             <ul className="space-y-3">
               <li>
                 <Link href="/mentions-legales" className="text-white/50 hover:text-gold transition-colors text-sm">
-                  Mentions légales
+                  {t('footer.legal')}
                 </Link>
               </li>
               <li>
                 <Link href="/mentions-legales#cgv" className="text-white/50 hover:text-gold transition-colors text-sm">
-                  Conditions générales de vente
+                  {t('footer.cgv')}
                 </Link>
               </li>
               <li>
                 <Link href="/mentions-legales#confidentialite" className="text-white/50 hover:text-gold transition-colors text-sm">
-                  Politique de confidentialité
+                  {t('footer.privacy')}
                 </Link>
               </li>
               <li>
                 <Link href="/mentions-legales#retrait" className="text-white/50 hover:text-gold transition-colors text-sm">
-                  Conditions de retrait
+                  {t('footer.pickup')}
                 </Link>
               </li>
             </ul>
@@ -72,7 +76,7 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">Contact</h3>
+            <h3 className="text-gold font-semibold text-sm uppercase tracking-wider mb-4">{t('footer.contact')}</h3>
             <ul className="space-y-3 text-white/50 text-sm">
               <li className="flex items-start gap-2">
                 <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-gold/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -97,7 +101,7 @@ export default function Footer() {
                 <svg className="w-4 h-4 flex-shrink-0 text-gold/60" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>Lun - Sam : 10h - 18h</span>
+                <span>{t('footer.hours')}</span>
               </li>
             </ul>
           </div>
@@ -108,10 +112,10 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-white/30 text-xs">
-            &copy; {new Date().getFullYear()} Chalamoti. Tous droits réservés.
+            &copy; {new Date().getFullYear()} Chalamoti. {t('footer.rights')}
           </p>
           <p className="text-white/30 text-xs">
-            L&apos;abus d&apos;alcool est dangereux pour la santé. À consommer avec modération.
+            {t('footer.warning')}
           </p>
         </div>
       </div>

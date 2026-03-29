@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 export default function InscriptionPage() {
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', password: '', confirmPassword: '' });
@@ -12,21 +13,22 @@ export default function InscriptionPage() {
   const [showPassword, setShowPassword] = useState(false);
   const { register } = useAuth();
   const router = useRouter();
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
     if (!form.firstName || !form.lastName || !form.email || !form.password) {
-      setError('Veuillez remplir tous les champs.');
+      setError(t('register.error.empty'));
       return;
     }
     if (form.password.length < 6) {
-      setError('Le mot de passe doit contenir au moins 6 caract\u00e8res.');
+      setError(t('register.error.password'));
       return;
     }
     if (form.password !== form.confirmPassword) {
-      setError('Les mots de passe ne correspondent pas.');
+      setError(t('register.error.mismatch'));
       return;
     }
 
@@ -55,10 +57,10 @@ export default function InscriptionPage() {
         <div className="grain absolute inset-0" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-            <span className="text-gold text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">Rejoignez-nous</span>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">Inscription</h1>
+            <span className="text-gold text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">{t('register.subtitle')}</span>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">{t('register.title')}</h1>
             <p className="text-white/50 max-w-xl mx-auto">
-              Cr&eacute;ez votre compte pour commander nos vins g&eacute;orgiens.
+              {t('register.desc')}
             </p>
           </motion.div>
         </div>
@@ -79,7 +81,7 @@ export default function InscriptionPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
                 </svg>
               </div>
-              <h2 className="text-xl font-serif font-bold text-charcoal">Cr&eacute;er un compte</h2>
+              <h2 className="text-xl font-serif font-bold text-charcoal">{t('register.form.title')}</h2>
             </div>
 
             {error && (
@@ -95,7 +97,7 @@ export default function InscriptionPage() {
             <div className="space-y-5">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Pr&eacute;nom</label>
+                  <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('register.firstname')}</label>
                   <input
                     type="text"
                     required
@@ -106,7 +108,7 @@ export default function InscriptionPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Nom</label>
+                  <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('register.lastname')}</label>
                   <input
                     type="text"
                     required
@@ -119,7 +121,7 @@ export default function InscriptionPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Adresse e-mail</label>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('register.email')}</label>
                 <input
                   type="email"
                   required
@@ -131,7 +133,7 @@ export default function InscriptionPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Mot de passe</label>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('register.password')}</label>
                 <div className="relative">
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -139,7 +141,7 @@ export default function InscriptionPage() {
                     value={form.password}
                     onChange={e => { setForm(prev => ({ ...prev, password: e.target.value })); setError(''); }}
                     className="w-full px-4 py-3 rounded-xl border border-cream bg-offwhite focus:outline-none focus:ring-2 focus:ring-wine/20 focus:border-wine transition-colors pr-12"
-                    placeholder="6 caract&#232;res minimum"
+                    placeholder={t('register.password.hint')}
                   />
                   <button
                     type="button"
@@ -155,7 +157,7 @@ export default function InscriptionPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">Confirmer le mot de passe</label>
+                <label className="block text-sm font-medium text-charcoal/70 mb-1.5">{t('register.confirm')}</label>
                 <input
                   type="password"
                   required
@@ -170,14 +172,14 @@ export default function InscriptionPage() {
                 type="submit"
                 className="w-full py-4 bg-wine text-white font-semibold rounded-xl hover:bg-wine-dark transition-all duration-300 shadow-lg shadow-wine/20 hover:shadow-xl hover:-translate-y-0.5"
               >
-                Cr&eacute;er mon compte
+                {t('register.submit')}
               </button>
             </div>
 
             <p className="mt-6 text-center text-sm text-charcoal/50">
-              D&eacute;j&agrave; un compte ?{' '}
+              {t('register.login')}{' '}
               <Link href="/connexion" className="text-wine font-semibold hover:underline">
-                Connectez-vous
+                {t('register.login.link')}
               </Link>
             </p>
           </motion.form>

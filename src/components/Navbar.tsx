@@ -6,13 +6,16 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
+import { useTranslation } from '@/i18n/LanguageContext';
 import CartDrawer from './CartDrawer';
+import LanguageSwitcher from './LanguageSwitcher';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
   const { itemCount, setIsCartOpen } = useCart();
+  const { t } = useTranslation();
   const { user, isAdmin, logout } = useAuth();
 
   useEffect(() => {
@@ -26,11 +29,11 @@ export default function Navbar() {
   }, [pathname]);
 
   const links = [
-    { href: '/', label: 'Accueil' },
-    { href: '/catalogue', label: 'Catalogue' },
-    { href: '/commander', label: 'Commander' },
-    { href: '/a-propos', label: 'À propos' },
-    { href: '/contact', label: 'Contact' },
+    { href: '/', label: t('nav.home') },
+    { href: '/catalogue', label: t('nav.catalog') },
+    { href: '/commander', label: t('nav.order') },
+    { href: '/a-propos', label: t('nav.about') },
+    { href: '/contact', label: t('nav.contact') },
   ];
 
   return (
@@ -100,7 +103,7 @@ export default function Navbar() {
                           : 'bg-white/10 text-gold hover:bg-white/20'
                       }`}
                     >
-                      Admin
+                      {t('nav.admin')}
                     </Link>
                   )}
                   <div className="relative group">
@@ -131,13 +134,13 @@ export default function Navbar() {
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                           </svg>
-                          Profil
+                          {t('nav.profile')}
                         </Link>
                         <Link href="/aide" className="flex items-center gap-3 px-4 py-2.5 text-sm text-charcoal/70 hover:bg-cream/50 hover:text-charcoal transition-colors">
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                           </svg>
-                          Aide
+                          {t('nav.help')}
                         </Link>
                       </div>
                       <div className="border-t border-cream">
@@ -148,7 +151,7 @@ export default function Navbar() {
                           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                           </svg>
-                          Se d&eacute;connecter
+                          {t('nav.logout')}
                         </button>
                       </div>
                     </div>
@@ -166,9 +169,12 @@ export default function Navbar() {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                   </svg>
-                  Connexion
+                  {t('nav.login')}
                 </Link>
               )}
+
+              {/* Language Switcher */}
+              <LanguageSwitcher scrolled={scrolled} />
 
               {/* Cart Button */}
               <button
@@ -244,6 +250,9 @@ export default function Navbar() {
               className="md:hidden bg-white/95 backdrop-blur-md border-t border-cream overflow-hidden"
             >
               <div className="px-4 py-4 space-y-1">
+                <div className="flex justify-center mb-3">
+                  <LanguageSwitcher scrolled={true} />
+                </div>
                 {links.map(link => (
                   <Link
                     key={link.href}
@@ -266,25 +275,25 @@ export default function Navbar() {
                       </div>
                       {isAdmin && (
                         <Link href="/admin" className="block px-4 py-3 rounded-lg text-sm font-bold tracking-wide uppercase text-wine bg-wine/5 hover:bg-wine/10 transition-colors">
-                          Panel Admin
+                          {t('nav.panel')}
                         </Link>
                       )}
                       <Link href="/profil" className="block px-4 py-3 rounded-lg text-sm font-medium tracking-wide uppercase text-charcoal/70 hover:bg-cream/50 hover:text-wine transition-colors">
-                        Profil
+                        {t('nav.profile')}
                       </Link>
                       <Link href="/aide" className="block px-4 py-3 rounded-lg text-sm font-medium tracking-wide uppercase text-charcoal/70 hover:bg-cream/50 hover:text-wine transition-colors">
-                        Aide
+                        {t('nav.help')}
                       </Link>
                       <button
                         onClick={logout}
                         className="w-full text-left block px-4 py-3 rounded-lg text-sm font-medium tracking-wide uppercase text-red-500 hover:bg-red-50 transition-colors"
                       >
-                        D&eacute;connexion
+                        {t('nav.logout')}
                       </button>
                     </>
                   ) : (
                     <Link href="/connexion" className="block px-4 py-3 rounded-lg text-sm font-medium tracking-wide uppercase text-wine hover:bg-wine/5 transition-colors">
-                      Connexion
+                      {t('nav.login')}
                     </Link>
                   )}
                 </div>

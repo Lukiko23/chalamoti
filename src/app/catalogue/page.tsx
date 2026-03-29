@@ -5,18 +5,20 @@ import { motion } from 'framer-motion';
 import ProductCard from '@/components/ProductCard';
 import SectionTitle from '@/components/SectionTitle';
 import { products } from '@/data/products';
+import { useTranslation } from '@/i18n/LanguageContext';
 
 type Filter = 'all' | 'bouteille' | 'bidon';
 
 export default function CataloguePage() {
   const [filter, setFilter] = useState<Filter>('all');
+  const { t } = useTranslation();
 
   const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
 
   const filters: { key: Filter; label: string }[] = [
-    { key: 'all', label: 'Tous les vins' },
-    { key: 'bouteille', label: 'Bouteilles 75cl' },
-    { key: 'bidon', label: 'Bidons 5L' },
+    { key: 'all', label: t('catalog.all') },
+    { key: 'bouteille', label: t('catalog.bottles') },
+    { key: 'bidon', label: t('catalog.bidons') },
   ];
 
   return (
@@ -33,14 +35,13 @@ export default function CataloguePage() {
             transition={{ duration: 0.6 }}
           >
             <span className="text-gold text-xs font-semibold uppercase tracking-[0.3em] mb-4 block">
-              Notre collection
+              {t('catalog.subtitle')}
             </span>
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
-              Catalogue des vins
+              {t('catalog.title')}
             </h1>
             <p className="text-white/50 max-w-xl mx-auto">
-              Explorez notre s&eacute;lection de vins g&eacute;orgiens authentiques.
-              Bouteilles et formats g&eacute;n&eacute;reux pour toutes les occasions.
+              {t('catalog.desc')}
             </p>
           </motion.div>
         </div>
@@ -80,16 +81,16 @@ export default function CataloguePage() {
           <div className="mt-16 bg-cream/40 rounded-2xl p-8 border border-cream">
             <div className="grid md:grid-cols-3 gap-6 text-center">
               <div>
-                <p className="font-serif font-bold text-charcoal mb-1">Retrait sur place</p>
-                <p className="text-sm text-charcoal/50">Commandez et venez r&eacute;cup&eacute;rer vos vins</p>
+                <p className="font-serif font-bold text-charcoal mb-1">{t('catalog.pickup')}</p>
+                <p className="text-sm text-charcoal/50">{t('catalog.pickup.sub')}</p>
               </div>
               <div>
-                <p className="font-serif font-bold text-charcoal mb-1">Paiement au retrait</p>
-                <p className="text-sm text-charcoal/50">En esp&egrave;ces ou par carte bancaire</p>
+                <p className="font-serif font-bold text-charcoal mb-1">{t('catalog.payment')}</p>
+                <p className="text-sm text-charcoal/50">{t('catalog.payment.sub')}</p>
               </div>
               <div>
-                <p className="font-serif font-bold text-charcoal mb-1">Cr&eacute;neaux flexibles</p>
-                <p className="text-sm text-charcoal/50">Choisissez l&apos;horaire qui vous convient</p>
+                <p className="font-serif font-bold text-charcoal mb-1">{t('catalog.schedule')}</p>
+                <p className="text-sm text-charcoal/50">{t('catalog.schedule.sub')}</p>
               </div>
             </div>
           </div>
