@@ -9,7 +9,9 @@ export default function VisitTracker() {
 
   useEffect(() => {
     trackVisit(pathname);
-  }, [pathname]);
+    // Only run once on mount, not on every navigation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return null;
 }

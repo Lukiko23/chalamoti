@@ -96,13 +96,51 @@ export async function getOrdersByEmail(email: string): Promise<Order[]> {
 
 // ---- VISITS ----
 
+async function getVisitorIp(): Promise<string | null> {
+  try {
+    const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+    const data = await res.json();
+    return data.ip || null;
+  } catch {
+    return null;
+  }
+}
+
 export async function trackVisit(page: string): Promise<void> {
   try {
-    await addDoc(collection(db, 'visits'), {
-      page,
-      timestamp: new Date().toISOString(),
-      date: new Date().toISOString().split('T')[0],
-    });
+    const todayStr = new Date().toISOString().split('T')[0];
+
+    // Check sessionStorage to avoid repeated calls within same session
+    if (typeof window !== 'undefined') {
+      const tracked = sessionStorage.getItem('visit_tracked');
+      if (tracked === todayStr) return;
+    }
+
+    const ip = await getVisitorIp();
+    if (!ip) return;
+
+    // Check if this IP already visited today
+    const existing = await getDocs(
+      query(
+        collection(db, 'visits'),
+        where('date', '==', todayStr),
+        where('ip', '==', ip)
+      )
+    );
+
+    if (existing.empty) {
+      await addDoc(collection(db, 'visits'), {
+        page,
+        ip,
+        timestamp: new Date().toISOString(),
+        date: todayStr,
+      });
+    }
+
+    // Mark this session as tracked for today
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('visit_tracked', todayStr);
+    }
   } catch { /* ignore */ }
 }
 
