@@ -96,13 +96,32 @@ export async function getOrdersByEmail(email: string): Promise<Order[]> {
 
 // ---- VISITS ----
 
-async function getVisitorIp(): Promise<string | null> {
+interface VisitorInfo {
+  ip: string;
+  city: string;
+  country: string;
+  region: string;
+}
+
+async function getVisitorInfo(): Promise<VisitorInfo | null> {
   try {
-    const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+    const res = await fetch('http://ip-api.com/json/?fields=query,city,regionName,country', { cache: 'no-store' });
     const data = await res.json();
-    return data.ip || null;
+    return {
+      ip: data.query || '',
+      city: data.city || '',
+      country: data.country || '',
+      region: data.regionName || '',
+    };
   } catch {
-    return null;
+    // Fallback: get IP only
+    try {
+      const res = await fetch('https://api.ipify.org?format=json', { cache: 'no-store' });
+      const data = await res.json();
+      return { ip: data.ip || '', city: '', country: '', region: '' };
+    } catch {
+      return null;
+    }
   }
 }
 
@@ -116,22 +135,25 @@ export async function trackVisit(page: string): Promise<void> {
       if (tracked === todayStr) return;
     }
 
-    const ip = await getVisitorIp();
-    if (!ip) return;
+    const info = await getVisitorInfo();
+    if (!info || !info.ip) return;
 
     // Check if this IP already visited today
     const existing = await getDocs(
       query(
         collection(db, 'visits'),
         where('date', '==', todayStr),
-        where('ip', '==', ip)
+        where('ip', '==', info.ip)
       )
     );
 
     if (existing.empty) {
       await addDoc(collection(db, 'visits'), {
         page,
-        ip,
+        ip: info.ip,
+        city: info.city,
+        country: info.country,
+        region: info.region,
         timestamp: new Date().toISOString(),
         date: todayStr,
       });
@@ -142,6 +164,25 @@ export async function trackVisit(page: string): Promise<void> {
       sessionStorage.setItem('visit_tracked', todayStr);
     }
   } catch { /* ignore */ }
+}
+
+export interface VisitRecord {
+  ip: string;
+  city: string;
+  country: string;
+  region: string;
+  date: string;
+  timestamp: string;
+  page: string;
+}
+
+export async function getAllVisits(): Promise<VisitRecord[]> {
+  try {
+    const snap = await getDocs(query(collection(db, 'visits'), orderBy('date', 'desc')));
+    return snap.docs.map(d => d.data() as VisitRecord);
+  } catch {
+    return [];
+  }
 }
 
 export interface VisitStats {
