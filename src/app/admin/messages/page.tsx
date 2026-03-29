@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { ContactMessage } from '@/types';
 import { getAllMessages, markMessageAsRead, replyToMessage } from '@/lib/storage';
 
@@ -68,13 +67,13 @@ export default function MessagesPage() {
 
   return (
     <div className="space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div>
         <h2 className="text-2xl font-serif font-bold text-charcoal mb-1">Messages</h2>
         <p className="text-charcoal/50 text-sm">
           {messages.length} message{messages.length > 1 ? 's' : ''}
           {unreadCount > 0 && <span className="text-wine font-semibold"> &middot; {unreadCount} non lu{unreadCount > 1 ? 's' : ''}</span>}
         </p>
-      </motion.div>
+      </div>
 
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
@@ -99,24 +98,17 @@ export default function MessagesPage() {
 
       {/* Messages list */}
       {sorted.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl border border-cream p-12 text-center"
-        >
+        <div className="bg-white rounded-2xl border border-cream p-12 text-center">
           <svg className="w-16 h-16 text-charcoal/15 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
           </svg>
           <p className="text-charcoal/40">Aucun message dans cette cat&eacute;gorie</p>
-        </motion.div>
+        </div>
       ) : (
         <div className="space-y-3">
           {sorted.map((msg, i) => (
-            <motion.div
+            <div
               key={msg.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.03 }}
               className={`bg-white rounded-2xl border transition-all duration-300 ${
                 !msg.read ? 'border-wine/30 shadow-sm' : 'border-cream'
               }`}
@@ -152,13 +144,9 @@ export default function MessagesPage() {
               </button>
 
               {/* Expanded content */}
-              <AnimatePresence>
+
                 {expandedId === msg.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
+                  <div
                     className="overflow-hidden"
                   >
                     <div className="px-5 pb-5 border-t border-cream pt-4">
@@ -219,10 +207,10 @@ export default function MessagesPage() {
                         </button>
                       )}
                     </div>
-                  </motion.div>
+                  </div>
                 )}
-              </AnimatePresence>
-            </motion.div>
+
+            </div>
           ))}
         </div>
       )}

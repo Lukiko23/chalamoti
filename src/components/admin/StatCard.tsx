@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 interface StatCardProps {
   icon: React.ReactNode;
   label: string;
@@ -18,16 +16,11 @@ const colorMap = {
   blue: { bg: 'bg-blue-100', text: 'text-blue-700' },
 };
 
-export default function StatCard({ icon, label, value, subtitle, color = 'wine', delay = 0 }: StatCardProps) {
+export default function StatCard({ icon, label, value, subtitle, color = 'wine' }: StatCardProps) {
   const c = colorMap[color];
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
-      className="bg-white rounded-2xl border border-cream p-6 hover:shadow-lg transition-shadow duration-300"
-    >
+    <div className="bg-white rounded-2xl border border-cream p-6 hover:shadow-lg transition-shadow duration-300">
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm text-charcoal/50 mb-1">{label}</p>
@@ -38,6 +31,6 @@ export default function StatCard({ icon, label, value, subtitle, color = 'wine',
           {icon}
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 }

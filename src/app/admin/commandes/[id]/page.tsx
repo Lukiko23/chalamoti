@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+
 import { Order, OrderStatus } from '@/types';
 import { getOrderById, updateOrderStatus } from '@/lib/storage';
 import OrderStatusBadge from '@/components/admin/OrderStatusBadge';
@@ -68,9 +68,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
       </div>
 
       {/* Status stepper */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
+      <div
         className="bg-white rounded-2xl border border-cream p-6"
       >
         <h3 className="text-sm font-semibold text-charcoal/50 uppercase tracking-wide mb-4">Mettre &agrave; jour le statut</h3>
@@ -90,14 +88,11 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             </button>
           ))}
         </div>
-      </motion.div>
+      </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
         {/* Order items */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
+        <div
           className="bg-white rounded-2xl border border-cream p-6"
         >
           <h3 className="text-lg font-serif font-bold text-charcoal mb-4">Articles command&eacute;s</h3>
@@ -126,14 +121,11 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             <span className="font-serif font-bold text-charcoal">Total</span>
             <span className="text-xl font-serif font-bold text-wine">{order.total.toFixed(2)}&nbsp;&euro;</span>
           </div>
-        </motion.div>
+        </div>
 
         {/* Customer info + pickup */}
         <div className="space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+          <div
             className="bg-white rounded-2xl border border-cream p-6"
           >
             <h3 className="text-lg font-serif font-bold text-charcoal mb-4">Informations client</h3>
@@ -161,12 +153,9 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 </div>
               )}
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+          <div
             className="bg-white rounded-2xl border border-cream p-6"
           >
             <h3 className="text-lg font-serif font-bold text-charcoal mb-4">Retrait</h3>
@@ -186,7 +175,7 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
                 <span className="font-medium text-charcoal">12 Rue du Vignoble, 75011 Paris</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </div>

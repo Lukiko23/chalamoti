@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+
 import { User } from '@/types';
 import { getAllUsers } from '@/lib/storage';
 
@@ -35,16 +35,16 @@ export default function UtilisateursPage() {
 
   return (
     <div className="space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div>
         <h2 className="text-2xl font-serif font-bold text-charcoal mb-1">Utilisateurs</h2>
         <p className="text-charcoal/50 text-sm">
           {users.length} utilisateur{users.length > 1 ? 's' : ''} inscrits
         </p>
-      </motion.div>
+      </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-white rounded-2xl border border-cream p-5">
+        <div className="bg-white rounded-2xl border border-cream p-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-wine/10 text-wine flex items-center justify-center">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -56,9 +56,9 @@ export default function UtilisateursPage() {
               <p className="text-xs text-charcoal/50">Total inscrits</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }} className="bg-white rounded-2xl border border-cream p-5">
+        <div className="bg-white rounded-2xl border border-cream p-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -70,9 +70,9 @@ export default function UtilisateursPage() {
               <p className="text-xs text-charcoal/50">Administrateurs</p>
             </div>
           </div>
-        </motion.div>
+        </div>
 
-        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-white rounded-2xl border border-cream p-5">
+        <div className="bg-white rounded-2xl border border-cream p-5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-green-100 text-green-700 flex items-center justify-center">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
@@ -84,7 +84,7 @@ export default function UtilisateursPage() {
               <p className="text-xs text-charcoal/50">Clients</p>
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* Search */}
@@ -103,12 +103,12 @@ export default function UtilisateursPage() {
 
       {/* Users list */}
       {filtered.length === 0 ? (
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="bg-white rounded-2xl border border-cream p-12 text-center">
+        <div className="bg-white rounded-2xl border border-cream p-12 text-center">
           <svg className="w-16 h-16 text-charcoal/15 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
           </svg>
           <p className="text-charcoal/40">Aucun utilisateur trouv&eacute;</p>
-        </motion.div>
+        </div>
       ) : (
         <div className="bg-white rounded-2xl border border-cream overflow-hidden">
           <div className="overflow-x-auto">
@@ -123,11 +123,8 @@ export default function UtilisateursPage() {
               </thead>
               <tbody className="divide-y divide-cream">
                 {filtered.map((user, i) => (
-                  <motion.tr
+                  <tr
                     key={user.id}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: i * 0.03 }}
                     className="hover:bg-cream/20 transition-colors"
                   >
                     <td className="px-6 py-4">
@@ -153,7 +150,7 @@ export default function UtilisateursPage() {
                     <td className="px-6 py-4 text-sm text-charcoal/50">
                       {user.createdAt && new Date(user.createdAt).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}
                     </td>
-                  </motion.tr>
+                  </tr>
                 ))}
               </tbody>
             </table>

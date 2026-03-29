@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+
 import { Order, OrderStatus } from '@/types';
 import { getAllOrders } from '@/lib/storage';
 import OrderStatusBadge from '@/components/admin/OrderStatusBadge';
@@ -45,10 +45,10 @@ export default function CommandesPage() {
 
   return (
     <div className="space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <div>
         <h2 className="text-2xl font-serif font-bold text-charcoal mb-1">Commandes</h2>
         <p className="text-charcoal/50 text-sm">{orders.length} commande{orders.length > 1 ? 's' : ''} au total</p>
-      </motion.div>
+      </div>
 
       {/* Filter tabs */}
       <div className="flex flex-wrap gap-2">
@@ -74,24 +74,17 @@ export default function CommandesPage() {
 
       {/* Orders list */}
       {sorted.length === 0 ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="bg-white rounded-2xl border border-cream p-12 text-center"
-        >
+        <div className="bg-white rounded-2xl border border-cream p-12 text-center">
           <svg className="w-16 h-16 text-charcoal/15 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007z" />
           </svg>
           <p className="text-charcoal/40">Aucune commande dans cette cat&eacute;gorie</p>
-        </motion.div>
+        </div>
       ) : (
         <div className="space-y-3">
           {sorted.map((order, i) => (
-            <motion.div
+            <div
               key={order.id}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
             >
               <Link
                 href={`/admin/commandes/${order.id}`}
@@ -131,7 +124,7 @@ export default function CommandesPage() {
                   ))}
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       )}
