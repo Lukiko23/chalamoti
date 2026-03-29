@@ -100,6 +100,54 @@ export default function VisitesPage() {
         </div>
       </div>
 
+      {/* Recurring Visitors Widget */}
+      {(() => {
+        const recurring = uniqueVisitors.filter(v => v.visitCount > 1).sort((a, b) => b.visitCount - a.visitCount);
+        return (
+          <div className="bg-white rounded-2xl border border-cream p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-wine/10 flex items-center justify-center">
+                <svg className="w-5 h-5 text-wine" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                </svg>
+              </div>
+              <div>
+                <h3 className="text-lg font-serif font-bold text-charcoal">Visiteurs r&eacute;currents</h3>
+                <p className="text-xs text-charcoal/40">{recurring.length} visiteur{recurring.length !== 1 ? 's' : ''} avec plusieurs visites</p>
+              </div>
+            </div>
+            {recurring.length === 0 ? (
+              <p className="text-sm text-charcoal/40 italic py-4 text-center">Aucun visiteur r&eacute;current pour le moment</p>
+            ) : (
+              <div className="space-y-2 max-h-64 overflow-y-auto">
+                {recurring.slice(0, 10).map(v => (
+                  <div key={v.ip} className="flex items-center justify-between px-4 py-3 rounded-xl bg-cream/30 hover:bg-cream/50 transition-colors">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-wine/10 text-wine flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={1.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0v.243" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-mono font-medium text-charcoal">{v.ip}</p>
+                        {v.city || v.country ? (
+                          <p className="text-xs text-charcoal/40">{[v.city, v.region, v.country].filter(Boolean).join(', ')}</p>
+                        ) : (
+                          <p className="text-xs text-charcoal/30 italic">Localisation inconnue</p>
+                        )}
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-wine/10 text-wine">
+                      {v.visitCount} visites
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
       {/* Line Chart */}
       <div className="bg-white rounded-2xl border border-cream p-6">
         <h3 className="text-lg font-serif font-bold text-charcoal mb-1">Visites - 7 derniers jours</h3>
@@ -107,9 +155,9 @@ export default function VisitesPage() {
         {(() => {
           const data = stats.dailyCounts;
           const chartW = 600;
-          const chartH = 180;
-          const padX = 10;
-          const padY = 10;
+          const chartH = 220;
+          const padX = 40;
+          const padY = 20;
           const w = chartW - padX * 2;
           const h = chartH - padY * 2;
 
@@ -125,7 +173,7 @@ export default function VisitesPage() {
           const areaPath = linePath + ` L${points[points.length - 1]?.x ?? 0},${padY + h} L${points[0]?.x ?? 0},${padY + h} Z`;
 
           return (
-            <svg viewBox={`0 0 ${chartW} ${chartH + 30}`} className="w-full h-56" preserveAspectRatio="none">
+            <svg viewBox={`0 0 ${chartW} ${chartH + 30}`} className="w-full" style={{ maxHeight: '280px' }} preserveAspectRatio="xMidYMid meet">
               {[0, 0.25, 0.5, 0.75, 1].map(pct => (
                 <line key={pct} x1={padX} x2={padX + w} y1={padY + h - pct * h} y2={padY + h - pct * h} stroke="#f0ece4" strokeWidth={1} />
               ))}
