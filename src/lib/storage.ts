@@ -105,13 +105,14 @@ interface VisitorInfo {
 
 async function getVisitorInfo(): Promise<VisitorInfo | null> {
   try {
-    const res = await fetch('http://ip-api.com/json/?fields=query,city,regionName,country', { cache: 'no-store' });
+    // Use ipapi.co (HTTPS, free tier: 1000 req/day)
+    const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
     const data = await res.json();
     return {
-      ip: data.query || '',
+      ip: data.ip || '',
       city: data.city || '',
-      country: data.country || '',
-      region: data.regionName || '',
+      country: data.country_name || '',
+      region: data.region || '',
     };
   } catch {
     // Fallback: get IP only
