@@ -2,11 +2,16 @@
 
 import { use, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { products } from '@/data/products';
 import { useCart } from '@/context/CartContext';
 import ProductCard from '@/components/ProductCard';
+
+const hasRealImage = (img: string) => {
+  return img && !img.includes('wine-red-bottle') && !img.includes('wine-white-bottle') && !img.includes('wine-red-5l') && !img.includes('wine-white-5l') && !img.includes('wine-red-bottle-2');
+};
 
 export default function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
@@ -69,23 +74,38 @@ export default function ProductPage({ params }: { params: Promise<{ slug: string
                 isRed ? 'bg-gradient-to-br from-wine/5 to-wine/15' : 'bg-gradient-to-br from-gold/5 to-gold/15'
               }`}
             >
-              <div className="relative">
-                <div className={`absolute -top-8 -right-8 w-40 h-40 rounded-full blur-2xl opacity-20 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
-                {product.category === 'bouteille' ? (
-                  <svg viewBox="0 0 120 240" className={`w-32 h-56 ${isRed ? 'text-wine/50' : 'text-gold/60'}`} fill="currentColor">
-                    <rect x="48" y="0" width="24" height="45" rx="4" opacity="0.9" />
-                    <path d="M48 45 C48 45, 18 80, 18 120 L18 210 C18 222, 28 232, 40 232 L80 232 C92 232, 102 222, 102 210 L102 120 C102 80, 72 45, 72 45 Z" opacity="0.4" />
-                    <ellipse cx="60" cy="160" rx="28" ry="35" opacity="0.12" />
-                    <text x="60" y="170" textAnchor="middle" fontSize="22" fontFamily="serif" fontWeight="bold" opacity="0.35">{product.name[0]}</text>
-                  </svg>
+              <div className="relative w-full h-full min-h-[300px]">
+                {hasRealImage(product.image) ? (
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    className="object-contain p-4"
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                  />
                 ) : (
-                  <svg viewBox="0 0 140 160" className={`w-36 h-40 ${isRed ? 'text-wine/50' : 'text-gold/60'}`} fill="currentColor">
-                    <rect x="20" y="20" width="100" height="14" rx="3" opacity="0.8" />
-                    <rect x="55" y="5" width="30" height="18" rx="4" opacity="0.6" />
-                    <rect x="10" y="34" width="120" height="115" rx="8" opacity="0.3" />
-                    <rect x="22" y="50" width="96" height="85" rx="4" opacity="0.12" />
-                    <text x="70" y="100" textAnchor="middle" fontSize="24" fontWeight="bold" opacity="0.3">5L</text>
-                  </svg>
+                  <>
+                    <div className={`absolute -top-8 -right-8 w-40 h-40 rounded-full blur-2xl opacity-20 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
+                    <div className="flex items-center justify-center h-full">
+                      {product.category === 'bouteille' ? (
+                        <svg viewBox="0 0 120 240" className={`w-32 h-56 ${isRed ? 'text-wine/50' : 'text-gold/60'}`} fill="currentColor">
+                          <rect x="48" y="0" width="24" height="45" rx="4" opacity="0.9" />
+                          <path d="M48 45 C48 45, 18 80, 18 120 L18 210 C18 222, 28 232, 40 232 L80 232 C92 232, 102 222, 102 210 L102 120 C102 80, 72 45, 72 45 Z" opacity="0.4" />
+                          <ellipse cx="60" cy="160" rx="28" ry="35" opacity="0.12" />
+                          <text x="60" y="170" textAnchor="middle" fontSize="22" fontFamily="serif" fontWeight="bold" opacity="0.35">{product.name[0]}</text>
+                        </svg>
+                      ) : (
+                        <svg viewBox="0 0 140 160" className={`w-36 h-40 ${isRed ? 'text-wine/50' : 'text-gold/60'}`} fill="currentColor">
+                          <rect x="20" y="20" width="100" height="14" rx="3" opacity="0.8" />
+                          <rect x="55" y="5" width="30" height="18" rx="4" opacity="0.6" />
+                          <rect x="10" y="34" width="120" height="115" rx="8" opacity="0.3" />
+                          <rect x="22" y="50" width="96" height="85" rx="4" opacity="0.12" />
+                          <text x="70" y="100" textAnchor="middle" fontSize="24" fontWeight="bold" opacity="0.3">5L</text>
+                        </svg>
+                      )}
+                    </div>
+                  </>
                 )}
               </div>
             </motion.div>

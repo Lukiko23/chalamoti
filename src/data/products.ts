@@ -15,7 +15,7 @@ export const products: Product[] = [
     origin: 'Kakhétie, Géorgie',
     available: true,
     category: 'bouteille',
-    image: '/wine-red-bottle.jpg',
+    image: '/rouge-bouteille.jpg.png',
   },
   {
     id: '2',

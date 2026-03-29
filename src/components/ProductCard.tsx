@@ -1,9 +1,14 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Product } from '@/types';
 import { useCart } from '@/context/CartContext';
+
+const hasRealImage = (img: string) => {
+  return img && !img.includes('wine-red-bottle') && !img.includes('wine-white-bottle') && !img.includes('wine-red-5l') && !img.includes('wine-white-5l') && !img.includes('wine-red-bottle-2');
+};
 
 interface ProductCardProps {
   product: Product;
@@ -28,35 +33,54 @@ export default function ProductCard({ product, index = 0 }: ProductCardProps) {
       <div className={`relative h-64 flex items-center justify-center overflow-hidden ${
         isRed ? 'bg-gradient-to-br from-wine/5 to-wine/10' : 'bg-gradient-to-br from-gold/5 to-gold/10'
       }`}>
-        {/* Decorative circles */}
-        <div className={`absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
-        <div className={`absolute -bottom-4 -left-4 w-24 h-24 rounded-full opacity-5 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
+        {hasRealImage(product.image) ? (
+          /* Real product image */
+          <motion.div
+            className="relative z-10 w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: 'spring', stiffness: 300 }}
+          >
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-contain p-4"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          </motion.div>
+        ) : (
+          <>
+            {/* Decorative circles */}
+            <div className={`absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
+            <div className={`absolute -bottom-4 -left-4 w-24 h-24 rounded-full opacity-5 ${isRed ? 'bg-wine' : 'bg-gold'}`} />
 
-        {/* Wine icon */}
-        <motion.div
-          className="relative z-10"
-          whileHover={{ scale: 1.05, y: -5 }}
-          transition={{ type: 'spring', stiffness: 300 }}
-        >
-          {isBidon ? (
-            <svg viewBox="0 0 80 100" className={`w-20 h-24 ${isRed ? 'text-wine/60' : 'text-gold/70'}`} fill="currentColor">
-              <rect x="10" y="15" width="60" height="8" rx="2" opacity="0.8" />
-              <rect x="30" y="5" width="20" height="12" rx="3" opacity="0.6" />
-              <rect x="5" y="23" width="70" height="70" rx="6" opacity="0.3" />
-              <rect x="12" y="35" width="56" height="48" rx="3" opacity="0.15" />
-              <text x="40" y="65" textAnchor="middle" fontSize="14" fontWeight="bold" opacity="0.4" fill="currentColor">5L</text>
-            </svg>
-          ) : (
-            <svg viewBox="0 0 60 120" className={`w-16 h-28 ${isRed ? 'text-wine/60' : 'text-gold/70'}`} fill="currentColor">
-              <rect x="24" y="0" width="12" height="20" rx="2" opacity="0.8" />
-              <path d="M24 20 C24 20, 15 35, 15 55 L15 105 C15 110, 18 113, 22 113 L38 113 C42 113, 45 110, 45 105 L45 55 C45 35, 36 20, 36 20 Z" opacity="0.3" />
-              <ellipse cx="30" cy="75" rx="12" ry="15" opacity="0.1" />
-            </svg>
-          )}
-        </motion.div>
+            {/* Wine icon */}
+            <motion.div
+              className="relative z-10"
+              whileHover={{ scale: 1.05, y: -5 }}
+              transition={{ type: 'spring', stiffness: 300 }}
+            >
+              {isBidon ? (
+                <svg viewBox="0 0 80 100" className={`w-20 h-24 ${isRed ? 'text-wine/60' : 'text-gold/70'}`} fill="currentColor">
+                  <rect x="10" y="15" width="60" height="8" rx="2" opacity="0.8" />
+                  <rect x="30" y="5" width="20" height="12" rx="3" opacity="0.6" />
+                  <rect x="5" y="23" width="70" height="70" rx="6" opacity="0.3" />
+                  <rect x="12" y="35" width="56" height="48" rx="3" opacity="0.15" />
+                  <text x="40" y="65" textAnchor="middle" fontSize="14" fontWeight="bold" opacity="0.4" fill="currentColor">5L</text>
+                </svg>
+              ) : (
+                <svg viewBox="0 0 60 120" className={`w-16 h-28 ${isRed ? 'text-wine/60' : 'text-gold/70'}`} fill="currentColor">
+                  <rect x="24" y="0" width="12" height="20" rx="2" opacity="0.8" />
+                  <path d="M24 20 C24 20, 15 35, 15 55 L15 105 C15 110, 18 113, 22 113 L38 113 C42 113, 45 110, 45 105 L45 55 C45 35, 36 20, 36 20 Z" opacity="0.3" />
+                  <ellipse cx="30" cy="75" rx="12" ry="15" opacity="0.1" />
+                </svg>
+              )}
+            </motion.div>
+          </>
+        )}
 
         {/* Badge */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-4 left-4 z-20">
           <span className={`inline-block px-3 py-1 text-xs font-semibold rounded-full ${
             isRed
               ? 'bg-wine/10 text-wine border border-wine/20'
